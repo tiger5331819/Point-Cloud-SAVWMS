@@ -29,23 +29,23 @@ namespace SAVWMS
 
         private void btnconnect_Click(object sender, EventArgs e)
         {
-            if (btnconnect.Text == "连接")
+            if (btnconnect.Text == "连接到此设备")
             {
                 MainForm.mainForm.manager.cloudnet.Send(DeviceID());
                 //不要收获体积了。。。
-                //MainForm.mainForm.manager.cloudnet.Send(MainForm.mainForm.manager.cloudnet.CreatCodeToPackage(Codemode.monitor));
+                MainForm.mainForm.manager.cloudnet.Send(MainForm.mainForm.manager.cloudnet.CreatCodeToPackage(Codemode.monitor));
 
                 Thread.Sleep(1000);
 
 
-                btnconnect.Text = "断开";
+                //btnconnect.Text = "断开";
                 
             }
             else if (btnconnect.Text == "断开")
             {
                 MainForm.mainForm.manager.cloudnet.Send(MainForm.mainForm.manager.cloudnet.CreatCodeToPackage(Codemode.release));
 
-                btnconnect.Text = "连接";
+                btnconnect.Text = "连接到此设备";
 
             }
         }
@@ -54,8 +54,18 @@ namespace SAVWMS
         {
             Package package = new Package();
             package.message = Messagetype.codeus;
-            package.data = Encoding.UTF8.GetBytes(btnconnect.Text);
+            package.data = Encoding.UTF8.GetBytes(cmbaddress.Text);
             return package;
+        }
+
+        private void btnstart_Click(object sender, EventArgs e)
+        {
+            MainForm.mainForm.manager.cloudnet.Send(MainForm.mainForm.manager.cloudnet.CreatCodeToPackage(Codemode.play));
+        }
+
+        private void btnstop_Click(object sender, EventArgs e)
+        {
+            MainForm.mainForm.manager.cloudnet.Send(MainForm.mainForm.manager.cloudnet.CreatCodeToPackage(Codemode.sendvolume));
         }
     }
 }

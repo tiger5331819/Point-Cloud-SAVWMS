@@ -12,6 +12,7 @@ using System.Windows.Forms;
 
 namespace SAVWMS
 {
+    [Serializable]
     public class UserData : TypeData
     {
         public NetIP ip;
@@ -67,17 +68,11 @@ namespace SAVWMS
                     {
                         socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                         socket.Connect(point);
-                        Thread.Sleep(1000);
-                        MessageBox.Show("发送第一次");
-
                         Send(UserDataToPackage(Data, Messagetype.codeus));
 
-
-                        MessageBox.Show("发送成功");
                         Thread waitcommand = new Thread(ReceiveMsg);
                         waitcommand.IsBackground = true;
                         waitcommand.Start(socket);
-                        //MessageBox.Show("Link server");
                         connectflag = false;
                     }
                     catch (Exception ex)
@@ -123,7 +118,8 @@ namespace SAVWMS
                 }
                 catch (Exception ex)
                 {
-                    
+                    MessageBox.Show(ex.ToString());
+                    client.Dispose();
                     connectflag = true;
                     break;
                 }

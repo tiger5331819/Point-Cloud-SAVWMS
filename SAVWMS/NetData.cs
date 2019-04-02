@@ -228,8 +228,8 @@ namespace SAVWMS
             
             Package package = new Package();
             package.data = null;
-            //try
-            //{
+            try
+            {
                 using (MemoryStream ms = new MemoryStream())
                 {
                     BinaryFormatter bf = new BinaryFormatter();
@@ -237,23 +237,20 @@ namespace SAVWMS
                     {
                         
                         case Messagetype.package: bf.Serialize(ms, data); break;
-                        case Messagetype.codeus: MessageBox.Show("调用1"); bf.Serialize(ms, data); MessageBox.Show("调用2"); break;
+                        case Messagetype.codeus: bf.Serialize(ms, data);  break;
                         default: bf.Serialize(ms, data); break;
                     }
                     ms.Flush();
-                    MessageBox.Show("调用3");
                     package.message = messagetype;
                     package.data = ms.ToArray();
                 }
-                MessageBox.Show("调用4");
-                MessageBox.Show(package.message.ToString());
                 return package;
-            //}
-            //catch (Exception ex)
-            //{
-                //Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
 
-            //}
+            }
             return package;
         }
         public delegate void PackageToUserData(Package package);
